@@ -2,14 +2,14 @@ from yelpapi import YelpAPI
 from pprint import pprint
 import math
 import operator
-secret = open('yelp_key.txt', 'r')
+secret = open('app/yelp_key.txt', 'r')
 ykey = secret.read()
 secret.close()
 yelp_api = YelpAPI(ykey)
 
 MODERATE_NUMBER_OF_REVIEWS = 50
 
-def getYelp(test):
+def get_yelp(test):
     response=[]
     for key, value in test.items():
         #if key > begin_interval and key < end_interval:

@@ -52,7 +52,7 @@ def get_gmaps_coordinates(start_location, end_location, time_interval, start_tim
         list of dictionaries with arrival time as key and 
         (latitude, longitude) tuple as value
     """
-    secret = open('gmaps_key.txt', 'r')
+    secret = open('app/gmaps_key.txt', 'r')
     gkey = secret.read()
     secret.close()
     gmaps = googlemaps.Client(key=gkey)
