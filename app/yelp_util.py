@@ -2,18 +2,21 @@ from yelpapi import YelpAPI
 from pprint import pprint
 import math
 import operator
-secret = open('app/yelp_key.txt', 'r')
-ykey = secret.read()
-secret.close()
-yelp_api = YelpAPI(ykey)
+import time
 
 MODERATE_NUMBER_OF_REVIEWS = 50
 
 def get_yelp(test):
+    secret = open('app/yelp_key.txt', 'r')
+    ykey = secret.read()
+    secret.close()
+    yelp_api = YelpAPI(ykey)
+
     response=[]
     for key, value in test.items():
         #if key > begin_interval and key < end_interval:
         response.append(yelp_api.search_query(term='restaurants', latitude=value[0], longitude=value[1], sort_by='rating', limit=5))
+        time.sleep(2) # sleep 2 seconds to avoid yelp api limits
     initial=[]
     for i in range(len(response)):
         for j in range(5):

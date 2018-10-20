@@ -73,12 +73,14 @@ def get_gmaps_coordinates(start_location, end_location, time_interval, start_tim
     current_time = time_start
     filtered_points = {}
 
-    for p in points:
+    for index, p in enumerate(points):
         current_time += interval_time
+        if index % 8 != 0: # arbitrarily use every 8th point
+            continue
         if (current_time > t_interval[0] and current_time < t_interval[1]):
             filtered_points[current_time] = (p[0], p[1])
             # print("Lat: {} Long: {} Time: {}".format(p[0], p[1], current_time))
 
     return filtered_points
 
-print(get_gmaps_coordinates('Vanderbilt University, Nashville', 'Klaus Advanced Computing Center, Atlanta', (time.time(), time.time()+3600)))
+# print(get_gmaps_coordinates('Vanderbilt University, Nashville', 'Klaus Advanced Computing Center, Atlanta', (time.time(), time.time()+3600)))
