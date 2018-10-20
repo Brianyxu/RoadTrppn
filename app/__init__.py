@@ -2,7 +2,7 @@ import os
 import time
 
 from flask import request, jsonify, Flask
-from app.gmaps_util import get_gmaps_coordinates
+from app.gmaps_util import get_gmaps_coordinates, get_gmaps_directions
 from app.yelp_util import get_yelp
 
 
@@ -18,12 +18,10 @@ def restaurants():
         if not json_data:
             return jsonify({'message': 'No input data'}), 400
 
-        #coords = get_gmaps_coordinates(json_data[])
+        # coords = get_gmaps_coordinates(json_data[])
         coords = get_gmaps_coordinates('Vanderbilt University, Nashville', 'Klaus Advanced Computing Center, Atlanta', (time.time(), time.time()+3600))
         restaurants = get_yelp(coords)
-        print("Restaurants:")
-        print(restaurants)
-        return jsonify({'Restaurants': str(len(restaurants))}), 200
+        return jsonify(restaurants), 200
 
 @app.route('/directions', methods=['GET'])
 def directions():
@@ -31,6 +29,10 @@ def directions():
         json_data = request.get_json()
         if not json_data:
             return jsonify({'message': 'No input data'}), 400
+
+        # directions = get_gmaps_directions(json_data[])
+        directions = get_gmaps_directions('Vanderbilt University, Nashville', 'Klaus Advanced Computing Center, Atlanta')
+        return jsonify(directions), 200
 
 
 if __name__ == '__main__':

@@ -37,10 +37,10 @@ def get_gmaps_coordinates(start_location, end_location, time_interval, start_tim
 
     Arguments
     ---------
-    start_location : tuple
-        (latitude, longitude) floats
-    end_location : tuple
-        (latitude, longitude) floats
+    start_location : string
+        Starting place name or address
+    end_location : string
+        Ending place name or address
     time_interval : tuple
         (begin epoch time, end epoch time)
     start_time : float
@@ -49,7 +49,7 @@ def get_gmaps_coordinates(start_location, end_location, time_interval, start_tim
     Returns
     -------
     filtered_points : list
-        list of dictionaries with arrival time as key and 
+        List of dictionaries with arrival time as key and 
         (latitude, longitude) tuple as value
     """
     secret = open('app/gmaps_key.txt', 'r')
@@ -62,6 +62,8 @@ def get_gmaps_coordinates(start_location, end_location, time_interval, start_tim
     t_interval = (time.time(), time.time()+7200)
     if start_time is None:
         time_start = time.time()
+    else:
+        time_start = start_time
 
     result = gmaps.directions(start_loc, end_loc, mode='driving', 
         departure_time=time_start)
@@ -83,4 +85,45 @@ def get_gmaps_coordinates(start_location, end_location, time_interval, start_tim
 
     return filtered_points
 
+def get_gmaps_directions(start_location, end_location, start_time=None):
+    """
+    Returns directions to a location
+
+    Arguments
+    ---------
+    start_location : string
+        Starting place name or address
+    end_location : string
+        Ending place name or address
+    start_time : float
+        Epoch time when trip begins
+
+    Returns
+    -------
+    directions : list
+        Directions to the final location
+    """
+    secret = open('app/gmaps_key.txt', 'r')
+    gkey = secret.read()
+    secret.close()
+    gmaps = googlemaps.Client(key=gkey)
+
+    start_loc = start_location
+    end_loc = end_location
+    if start_time is None:
+        time_start = time.time()
+    else:
+        time_start = start_time
+
+    result = gmaps.directions(start_loc, end_loc, mode='driving',
+        departure_time=time_start)
+    steps = result[0]['legs'][0]['steps']
+    directions = []
+
+    for s in steps:
+        directions.append(s['html_instructions'])
+
+    return directions
+
+# print(get_gmaps_directions('Vanderbilt University', 'Klaus Advanced Computing Center', time.time()))
 # print(get_gmaps_coordinates('Vanderbilt University, Nashville', 'Klaus Advanced Computing Center, Atlanta', (time.time(), time.time()+3600)))
