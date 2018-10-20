@@ -1,0 +1,10 @@
+__pycache__/
+instance/
+.webassets-cache
+.python-version
+.env
+.venv
+env/
+venv/
+
+*.txt
