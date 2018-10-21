@@ -27,7 +27,7 @@ def get_yelp(points):
     response=[]
     for key, value in points.items():
         response.append(yelp_api.search_query(term='restaurants', latitude=value[0], longitude=value[1], sort_by='rating', limit=5))
-        time.sleep(2) # sleep 2 seconds to avoid yelp api limits
+        time.sleep(.1) # sleep .1 seconds to avoid yelp api limits
     initial=[]
     for i in range(len(response)):
         for j in range(5):
